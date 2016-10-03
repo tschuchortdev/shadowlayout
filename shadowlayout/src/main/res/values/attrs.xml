@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ShadowLayout">
+        <attr name="elevation" format="dimension"/>
+        <attr name="liftOnTouch" format="dimension"/>
+        <attr name="drawOutsideBounds" format="boolean"/> <!-- default false -->
+        <attr name="useNativeElevation" format="boolean"/> <!-- default false -->
+        <attr name="cacheShadow" format="boolean"/> <!-- default true -->
+    </declare-styleable>
+</resources>

@@ -1,0 +1,14 @@
+*.iml
+*.log
+.gradle
+/local.properties
+/.idea/workspace.xml
+/.idea/libraries
+.DS_Store
+/build
+/captures
+/.idea/inspectionProfiles/profiles_settings.xml
+/.idea/inspectionProfiles/Project_Default.xml
+/.idea/dictionaries/*
+/.idea/tasks.xml
+/.idea/gradle.xml

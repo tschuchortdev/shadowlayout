@@ -1,0 +1,58 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-android-extensions:$kotlin_version"
+    }
+}
+
+
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    compileSdkVersion 24
+    buildToolsVersion "24.0.2"
+
+    android.enforceUniquePackageName=false
+
+    sourceCompatibility = 1.7
+    targetCompatibility = 1.7
+
+    dexOptions {
+        incremental false
+    }
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 24
+        renderscriptTargetApi 24
+        renderscriptSupportModeEnabled true
+        versionCode 1
+        versionName "1.0"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    sourceCompatibility = 1.7
+    targetCompatibility = 1.7
+
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:appcompat-v7:24.2.0'
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    //compile project(':shadowlayout-debug')
+}
+repositories {
+    mavenCentral()
+}
