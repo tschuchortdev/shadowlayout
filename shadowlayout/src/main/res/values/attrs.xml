@@ -1,10 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="ShadowLayout">
+
+    <attr name="childChangesShape" format="boolean"/> <!-- default false -->
+
+    <declare-styleable name="MaterialShadowLayout">
         <attr name="elevation" format="dimension"/>
         <attr name="liftOnTouch" format="dimension"/>
-        <attr name="drawOutsideBounds" format="boolean"/> <!-- default false -->
         <attr name="useNativeElevation" format="boolean"/> <!-- default false -->
-        <attr name="cacheShadow" format="boolean"/> <!-- default true -->
+        <attr name="childChangesShape"/>
+        <attr name="cacheShadow" format="boolean"/>
+    </declare-styleable>
+
+    <declare-styleable name="CssShadowLayout">
+        <attr name="offsetX" format="dimension"/>
+        <attr name="offsetY" format="dimension"/>
+        <attr name="blur" format="dimension" />
+        <attr name="spread" format="dimension" />
+        <attr name="color" format="color" />
+        <attr name="childChangesShape"/>
     </declare-styleable>
 </resources>

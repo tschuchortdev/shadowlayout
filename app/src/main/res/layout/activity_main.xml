@@ -8,11 +8,10 @@
     android:orientation="vertical"
     tools:context="com.tschuchort.shadowlayoutexample.MainActivity">
 
-    <com.tschuchort.shadowlayout.widget.ShadowLayout
+    <!----><com.tschuchort.shadowlayout.widget.MaterialShadowLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:elevation="2dp"
-        app:drawOutsideBounds="false"
         app:useNativeElevation="false"
         app:liftOnTouch="2dp">
 
@@ -21,29 +20,13 @@
             android:layout_height="wrap_content"
             android:src="@drawable/shadow_test"/>
 
-    </com.tschuchort.shadowlayout.widget.ShadowLayout>
-
-    <com.tschuchort.shadowlayout.widget.ShadowLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:elevation="8dp"
-        app:drawOutsideBounds="true"
-        app:useNativeElevation="false"
-        app:liftOnTouch="4dp">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/shadow_test"/>
-
-    </com.tschuchort.shadowlayout.widget.ShadowLayout>
+    </com.tschuchort.shadowlayout.widget.MaterialShadowLayout>
 
 
-    <com.tschuchort.shadowlayout.widget.ShadowLayout
+    <com.tschuchort.shadowlayout.widget.MaterialShadowLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:elevation="2dp"
-        app:drawOutsideBounds="false"
         app:useNativeElevation="false"
         app:liftOnTouch="6dp">
 
@@ -52,19 +35,35 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:stateListAnimator="@null"
-            android:text="text"/>
+            android:text="material"/>
 
-    </com.tschuchort.shadowlayout.widget.ShadowLayout>
+    </com.tschuchort.shadowlayout.widget.MaterialShadowLayout>
 
-    <Button
+    <com.tschuchort.shadowlayout.widget.CssShadowLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="text"/>
+        app:color="@android:color/darker_gray"
+        app:blur="5dp"
+        app:spread="2dp">
+
+        <Button
+            android:background="@android:color/darker_gray"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:stateListAnimator="@null"
+            android:text="css"/>
+
+    </com.tschuchort.shadowlayout.widget.CssShadowLayout>
+
+  <!--  <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="stock"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:stateListAnimator="@null"
-        android:text="text"/>
+        android:text="stock no anim"/>-->
 
 </LinearLayout>
