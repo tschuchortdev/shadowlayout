@@ -11,6 +11,10 @@ internal fun isLollipopOrNewer(): Boolean {
 	return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
 }
 
+internal fun isKitKatOrNewer(): Boolean {
+	return Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT
+}
+
 internal fun dpToPx(dp: Float): Int {
 	return (dp * Resources.getSystem().displayMetrics.density).toInt()
 }
