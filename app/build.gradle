@@ -14,15 +14,15 @@ apply plugin: 'kotlin-android-extensions'
 
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion "24.0.2"
+    compileSdkVersion 25
+    buildToolsVersion "25.0.1"
 
     android.enforceUniquePackageName=false
 
     defaultConfig {
         applicationId "com.tschuchort.shadowlayoutexample"
         minSdkVersion 16
-        targetSdkVersion 24
+        targetSdkVersion 25
         versionCode 1
         versionName "1.0"
         renderscriptSupportModeEnabled true
@@ -33,6 +33,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
 }
 
 dependencies {
@@ -40,9 +43,12 @@ dependencies {
 
     testCompile 'junit:junit:4.12'
 
-    compile 'com.android.support:appcompat-v7:24.2.0'
+    compile 'com.android.support:appcompat-v7:25.1.0'
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     compile 'org.jetbrains.kotlin:kotlin-stdlib:+'
     compile project(':shadowlayout')
 
+}
+repositories {
+    mavenCentral()
 }

@@ -14,22 +14,18 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion "24.0.2"
+    compileSdkVersion 25
+    buildToolsVersion "25.0.1"
 
     android.enforceUniquePackageName=false
 
     sourceCompatibility = 1.7
     targetCompatibility = 1.7
 
-    dexOptions {
-        incremental false
-    }
-
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 24
-        renderscriptTargetApi 24
+        targetSdkVersion 25
+        renderscriptTargetApi 25
         renderscriptSupportModeEnabled true
         versionCode 1
         versionName "1.0"
@@ -41,6 +37,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
 }
 
 dependencies {
@@ -49,7 +48,7 @@ dependencies {
 
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:24.2.0'
+    compile 'com.android.support:appcompat-v7:25.1.0'
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     //compile project(':shadowlayout-debug')
 }
