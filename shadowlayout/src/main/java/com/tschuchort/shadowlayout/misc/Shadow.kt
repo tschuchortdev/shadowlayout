@@ -3,6 +3,7 @@ package com.tschuchort.shadowlayout.misc
 import android.graphics.Canvas
 import android.graphics.Rect
 
+
 interface Shadow {
 
 	/**
@@ -11,19 +12,7 @@ interface Shadow {
 	 * example: if 5px of shadow are visisble on the left side of the view
 	 * shadowSize.left is 5.
 	 */
-	val shadowSize: Rect
-
-	interface Builder<out T : Shadow> {
-
-		/**
-		 * size of the shadow relative to the views edges
-		 *
-		 * example: if 5px of shadow are visisble on the left side of the view
-		 * shadowSize.left is 5.
-		 */
-		fun calculateShadowSize(): Rect
-		fun build(): T
-	}
+	val size: Rect
 
 	fun draw(canvas: Canvas)
 }

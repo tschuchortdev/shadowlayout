@@ -8,10 +8,10 @@
     android:orientation="vertical"
     tools:context="com.tschuchort.shadowlayoutexample.MainActivity">
 
-    <!----><com.tschuchort.shadowlayout.widget.MaterialShadowLayout
+    <com.tschuchort.shadowlayout.widget.MaterialShadowLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:elevation="2dp"
+        app:elevation="5dp"
         app:useNativeElevation="false"
         app:liftOnTouch="2dp">
 
@@ -26,7 +26,7 @@
     <com.tschuchort.shadowlayout.widget.MaterialShadowLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:elevation="2dp"
+        app:elevation="5dp"
         app:useNativeElevation="false"
         app:liftOnTouch="6dp">
 
@@ -39,12 +39,15 @@
 
     </com.tschuchort.shadowlayout.widget.MaterialShadowLayout>
 
+
     <com.tschuchort.shadowlayout.widget.CssShadowLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:color="@android:color/darker_gray"
-        app:blur="5dp"
-        app:spread="2dp">
+        app:color="@android:color/black"
+        app:blur="10dp"
+        app:offsetX="1dp"
+        app:offsetY="1dp"
+        app:spread="1dp">
 
         <Button
             android:background="@android:color/darker_gray"
@@ -55,15 +58,23 @@
 
     </com.tschuchort.shadowlayout.widget.CssShadowLayout>
 
-  <!--  <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="stock"/>
-
     <Button
+        android:background="@android:color/darker_gray"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:stateListAnimator="@null"
-        android:text="stock no anim"/>-->
+        android:text="css"/>
+
+
+    <!--  <Button
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="stock"/>
+
+      <Button
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:stateListAnimator="@null"
+          android:text="stock no anim"/>-->
 
 </LinearLayout>

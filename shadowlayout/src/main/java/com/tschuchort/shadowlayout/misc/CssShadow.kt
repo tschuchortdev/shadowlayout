@@ -5,100 +5,124 @@ import android.graphics.*
 import android.support.v8.renderscript.RenderScript
 
 open class CssShadowParams(
-		var offsetX: Int = 0,
-		var offsetY: Int = 0,
-		var blur: Float = 0f,
-		var spread: Int = 0,
-		var color: Int = Color.BLACK)
+		open val offsetX: Int = 0,
+		open val offsetY: Int = 0,
+		open val blur: Float = 0f,
+		open val spread: Int = 0,
+		open var color: Int = Color.BLACK) {
 
-class CssShadow private constructor(builder: Builder) : Shadow{
-	private var shadowBmp: Bitmap? = null
-	private val paint = Paint()
-
-	var offsetX = builder.offsetX
-	var offsetY = builder.offsetY
-	val blur = builder.blur
-	val spread = builder.spread
-	var color = builder.color
-
-	class Builder : Shadow.Builder<CssShadow> {
-		var offsetX = 0
-		var offsetY = 0
-		var blur = 0f
-		var spread = 0
-		var color = Color.BLACK
-
-		override fun calculateShadowSize() =
-			Rect(
+	val size: Rect
+		get() = Rect(
 				blur.toInt() + spread - offsetY,
 				blur.toInt() + spread - offsetX,
 				blur.toInt() + spread + offsetY,
 				blur.toInt() + spread + offsetX)
 
-		override fun build(bmp: Bitmap): CssShadow {
-			var shadow = CssShadow(this)
-			shadow.shadowBmp = null
+	override fun equals(other: Any?): Boolean {
+		if(other is CssShadowParams) {
+			return other.offsetX == offsetX
+				&& other.offsetY == offsetY
+				&& other.blur == blur
+				&& other.spread == spread
+				&& other.color == color
+		}
+		else
+			return false
+	}
+
+	open fun copy(
+			offsetX: Int = this.offsetX,
+			offsetY: Int = this.offsetY,
+			blur: Float = this.blur,
+			spread: Int = this.spread,
+			color: Int = this.color)
+			= CssShadowParams(offsetX, offsetY, blur, spread, color)
+}
+
+class CssShadow(private val ctx: Context) : CssShadowParams(), Shadow {
+
+	private var blurredBmp: Bitmap? = null //not really lateinit but the compiler can't deduce that
+	private val paint = Paint()
+
+	override var offsetX = 0
+	override var offsetY = 0
+	override var spread = 0
+
+	override var color = Color.BLACK
+		set(value) {
+			field = value
+			paint.colorFilter = FillColorFilter(value)
 		}
 
-
-
+	constructor(ctx: Context, viewBmp: Bitmap, blur: Float) : this(ctx) {
+		reconfigure(viewBmp, blur)
 	}
 
-	fun reconfigure(builder: Builder) {
+	/**
+	 * reserves enough memory to display a shadow of the given configuration and view size
+	 * without reallocation. Will do nothing if more than enough memory is already allocated
+	 */
+	@JvmOverloads
+	fun reserveSize(viewWidth: Int, viewHeight: Int, blur: Float = this.blur) {
+		val width = viewWidth + (blur * 2).round()
+		val height = viewHeight + (blur * 2).round()
 
+		if(blurredBmp != null)
+			blurredBmp = getResizedBitmap(blurredBmp!!, width, height)
+		else
+			blurredBmp = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
 	}
 
-	override val shadowSize: Rect
-		get() = getShadowSizeForParams(this)
 
-	companion object {
-		private var rs: RenderScript? = null
+	@JvmOverloads
+	fun reconfigure(viewBmp: Bitmap, blur: Float = this.blur) {
+		reserveSize(viewBmp.width, viewBmp.height, blur)
 
-		@Synchronized
-		private fun getRenderScriptSingleton(c: Context): RenderScript {
-			if (rs == null)
-				rs = RenderScript.create(c)
+		blurredBmp!!.eraseColor(Color.TRANSPARENT)
 
-			return rs!!
+		if (blur > 0) {
+			blurBitmap(
+					sourceBmp = viewBmp,
+					destBmp = blurredBmp!!,
+					rs = getRenderScriptSingleton(ctx),
+					radius = if (blur <= 25) blur else 25f) //25 is the biggest possible blur radius
 		}
 	}
-
-	override fun updateSize(newWidth: Int, newHeight: Int) {
-		shadowBmp = getResizedBitmap(shadowBmp,
-				newWidth + shadowSize.left + shadowSize.right,
-				newHeight + shadowSize.top + shadowSize.bottom)
-	}
-
 
 	override fun draw(canvas: Canvas) {
-		updateSize(bufBmp.width, bufBmp.height)
+		if(blurredBmp != null) {
+			//don't do the extra step of scaling if spread is 0 anyway
+			if (spread != 0) {
+				canvas.drawBitmapScaled(
+						bmp = blurredBmp!!,
+						offsetX = 0f,
+						offsetY = 0f,
+						scaledWidth = (blurredBmp!!.width + spread * 2),
+						scaledHeight = (blurredBmp!!.height + spread * 2),
+						paint = paint)
 
-		shadowBmp!!.eraseColor(Color.TRANSPARENT)
+				/*paint.color = Color.RED
+				paint.colorFilter = null
 
-		colorBitmap(
-				source = bufBmp, dest = shadowBmp!!,
-				offsetX = offsetX.toFloat(), offsetY = offsetY.toFloat(),
-				color = color)
-
-		if (blur > 0)
-			blurBitmap(shadowBmp!!, getRenderScriptSingleton(ctx), if (blur <= 25) blur else 25f) //25 is the biggest possible blur radius
-
-		//don't do the extra step of scaling if spread is 0 anyway
-		if(spread != 0) {
-			canvas.drawBitmapScaled(
-					bmp = shadowBmp!!,
-					offsetX = -shadowSize.left.toFloat(),
-					offsetY = -shadowSize.top.toFloat(),
-					scaledWidth = (shadowBmp!!.width + spread * 2),
-					scaledHeight = (shadowBmp!!.height + spread * 2),
-					paint = paint)
+				canvas.drawRect(0f, 0f, blurredBmp!!.width.toFloat(), blurredBmp!!.height.toFloat(), paint)*/
+			}
+			else {
+				canvas.drawBitmap(
+						blurredBmp,
+						-size.left.toFloat(),
+						-size.top.toFloat(),
+						paint)
+			}
 		}
-		else {
-			canvas.drawBitmap(
-					shadowBmp!!,
-					-shadowSize.left.toFloat(),
-					-shadowSize.top.toFloat(),
-					paint)
+	}
+
+	companion object {
+		private lateinit var appCtx: Context
+		private val rs by lazy { RenderScript.create(appCtx) }
+
+		private fun getRenderScriptSingleton(c: Context): RenderScript {
+			appCtx = c.applicationContext
+			return rs
 		}
 	}
 }
