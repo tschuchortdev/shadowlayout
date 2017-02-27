@@ -44,8 +44,8 @@ internal fun Canvas.drawBitmapScaled(bmp: Bitmap, offsetX: Float, offsetY: Float
 
 internal fun Canvas.drawBitmapScaled(bmp: Bitmap, offsetX: Float, offsetY: Float, scaledWidth: Int, scaledHeight: Int, paint: Paint = Paint()) {
 	val m = Matrix()
-	m.setTranslate(offsetX, offsetY)
 	m.setScale(scaledWidth.toFloat() / bmp.width, scaledHeight.toFloat() / bmp.height)
+	m.postTranslate(offsetX, offsetY)
 	drawBitmap(bmp, m, paint)
 }
 
